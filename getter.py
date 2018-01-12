@@ -25,5 +25,5 @@ class TweetGetFlow():
         self._meta          = meta 
 
     
-    def get_tweet(self):
+    def get_tweet(self, search, max_id, since_from):
         pass
