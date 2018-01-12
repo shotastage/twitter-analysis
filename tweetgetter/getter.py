@@ -8,8 +8,9 @@ import numpy as np
 import json
 import datetime
 
-import config
-import entries
+from tweetgetter import config
+from tweetgetter import entries
+
 
 url = "https://api.twitter.com/1.1/statuses/user_timeline.json"
 params = {'screen_name':'@shota_mixtr',
