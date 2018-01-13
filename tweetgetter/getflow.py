@@ -23,7 +23,11 @@ import io
 class TweetGetFlow():
     
     def __init__(self):
-        self._twitter       = OAuth1Session(config.consumer_key, config.consumer_key_secret, config.access_token, config.access_token_secret)
+        self._twitter = OAuth1(config.consumer_key, config.consumer_key_secret, config.access_token, config.access_token_secret)
+
+        # Set default string enconding as UTF-8
+        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding = "utf-8")
+
 
     
     def get_tweet(self, search, count):
@@ -35,7 +39,11 @@ class TweetGetFlow():
               'count':count,
         }
 
-        req = self._twitter.get(url, params = params)
+        req = self._make_req_url(search, count)
+        res = requests.get(req, auth = self._twitter)
+        data = res.json()['statuses']
+
+
 
         if req.status_code == 200: # On Sucess
             # 
@@ -43,3 +51,10 @@ class TweetGetFlow():
         else:                     # On failure
             print ("Error: %d" % req.status_code)
             return "testing"
+
+    def _make_req_url(self, word, count):
+        return entries.TwitterAPIEntries.search + "?count=" + count + "&lang=ja&q=" + word
+
+
+    def _file_IO(self, data):
+        pass
