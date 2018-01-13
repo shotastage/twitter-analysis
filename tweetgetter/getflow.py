@@ -44,16 +44,37 @@ class TweetGetFlow():
         data = res.json()['statuses']
 
 
-
+        self._log_tweets(data)
+        """
         if req.status_code == 200: # On Sucess
             # 
             return "testing"
         else:                     # On failure
             print ("Error: %d" % req.status_code)
             return "testing"
+        """
 
     def _make_req_url(self, word, count):
-        return entries.TwitterAPIEntries.search + "?count=" + count + "&lang=ja&q=" + word
+        return "https://api.twitter.com/1.1/search/tweets.json" + "?count=" + count + "&lang=ja&q=" + word
+
+
+    def _log_tweets(self, data):
+        count = 0
+        while True:
+            for tweet in data:
+                print("----------------------------------------------------------------------------------------------------")
+                print(tweet["id"])
+                print(tweet["created_at"])
+                print(tweet["text"])
+
+                count += 1
+                maxid = int(tweet["id"]) - 1
+
+                if len(data) == 0:
+                    break
+
+        print("Tweet No: " + str(count))
+
 
 
     def _file_IO(self, data):
