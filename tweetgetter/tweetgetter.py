@@ -18,7 +18,7 @@ Usage: tweetgetter
     args.pop(0)
 
     search_word = args[1]
-    search_word_num = args[2]
+    search_word_num = args[3]
 
     flow = TweetGetFlow()
     flow.get_tweet(search_word, search_word_num)

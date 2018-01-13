@@ -32,12 +32,7 @@ class TweetGetFlow():
     
     def get_tweet(self, search, count):
 
-        print(search, count)
-
-        entry_point = entries.TwitterAPIEntries.search
-        params = {'q': search,
-              'count':count,
-        }
+        print("ワード" + search + "に対して" + count + "件のツイート取得を開始します。")
 
         req = self._make_req_url(search, count)
         res = requests.get(req, auth = self._twitter)
@@ -45,37 +40,19 @@ class TweetGetFlow():
 
 
         self._log_tweets(data)
-        """
-        if req.status_code == 200: # On Sucess
-            # 
-            return "testing"
-        else:                     # On failure
-            print ("Error: %d" % req.status_code)
-            return "testing"
-        """
+
 
     def _make_req_url(self, word, count):
         return "https://api.twitter.com/1.1/search/tweets.json" + "?count=" + count + "&lang=ja&q=" + word
 
 
     def _log_tweets(self, data):
-        count = 0
-        while True:
-            for tweet in data:
-                print("----------------------------------------------------------------------------------------------------")
-                print(tweet["id"])
-                print(tweet["created_at"])
-                print(tweet["text"])
-
-                count += 1
-                maxid = int(tweet["id"]) - 1
-
-                if len(data) == 0:
-                    break
-
-        print("Tweet No: " + str(count))
-
-
+        for tweet in data:
+            print("----------------------------------------------------------------------------------------------------")
+            print(tweet["id"])
+            print(tweet["created_at"])
+            print(tweet["text"])
+    
 
     def _file_IO(self, data):
         pass
