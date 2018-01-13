@@ -6,5 +6,6 @@
 #   Copyright (c) 2018 Shota Shimazu. All rights reserved.
 #
 
-def background_agent():
-    pass
+def background_agent(func):
+    while True:
+        func()
