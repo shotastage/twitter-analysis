@@ -1,22 +1,22 @@
-import requests
+# -*- encoding:utf-8 -*-
+#
+#   getflow.py
+#   tweetgetter
+#
+#   Copyright (c) 2018 Shota Shimazu. All rights reserved.
+#
 
-from requests_oauthlib import OAuth1Session
+from requests_oauthlib import OAuth1Session, OAuth1
 from requests.exceptions import ConnectionError, ReadTimeout, SSLError
-
-import numpy as np
-
-import json
-import datetime
-
 from tweetgetter import config
 from tweetgetter import entries
 
-
-url = "https://api.twitter.com/1.1/statuses/user_timeline.json"
-params = {'screen_name':'@shota_mixtr',
-          'exclude_replies':True,
-          'include_rts':False,
-          'count':200}
+import json
+import requests
+import urllib
+import numpy
+import sys
+import io
 
 
 
@@ -27,6 +27,9 @@ class TweetGetFlow():
 
     
     def get_tweet(self, search, count):
+
+        print(search, count)
+
         entry_point = entries.TwitterAPIEntries.search
         params = {'q': search,
               'count':count,
@@ -40,8 +43,3 @@ class TweetGetFlow():
         else:                     # On failure
             print ("Error: %d" % req.status_code)
             return "testing"
-
-
-flow = TweetGetFlow()
-
-print(str(flow.get_tweet("Twitter", 1000)))

@@ -1,4 +1,11 @@
 #!/usr/bin/env python
+# -*- encoding:utf-8 -*-
+#
+#   build.py
+#   tweetgetter
+#
+#   Copyright (c) 2018 Shota Shimazu. All rights reserved.
+#
 
 from os import system
 from sys import argv
