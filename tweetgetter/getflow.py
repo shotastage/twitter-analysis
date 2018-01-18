@@ -6,42 +6,55 @@
 #   Copyright (c) 2018 Shota Shimazu. All rights reserved.
 #
 
-from requests_oauthlib import OAuth1Session, OAuth1
-from requests.exceptions import ConnectionError, ReadTimeout, SSLError
 from tweetgetter import config
 from tweetgetter import entries
 from tweetgetter.savecsv import save_as_csv as sac
 
+from requests_oauthlib import OAuth1Session
+import csv
 import json
-import requests
-import urllib
-import numpy
-import sys
-import io
-
+import sys, codecs
+import pandas as pd
 
 
 class TweetGetFlow():
     
     def __init__(self):
-        self._twitter = OAuth1(config.consumer_key, config.consumer_key_secret, config.access_token, config.access_token_secret)
+        self._twitter = OAuth1Session(
+            config.consumer_key,
+            config.consumer_key_secret,
+            config.access_token,
+            config.access_token_secret
+        )
 
-        # Set default string enconding as UTF-8
-        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding = "utf-8")
-
+        self._url = "https://api.twitter.com/1.1/search/tweets.json?"
 
     
     def get_tweet(self, search, count):
+        params = {
+            "q": str(search),
+            "lang": "ja",
+            "result_type": "recent",
+            "count": count
+        }
+        req = self._twitter.get(self._url, params = params)
+        tweets = json.loads(req.text)
 
-        print("ワード" + search + "に対して" + count + "件のツイート取得を開始します。")
+        save_list = []
 
-        req = self._make_req_url(search, count)
-        res = requests.get(req, auth = self._twitter)
-        data = res.json()['statuses']
+        for tweet in tweets["statuses"]:
+            tmp_list = [tweet["user"]["screen_name"],
+                        tweet["user"]["name"], 
+                        tweet["text"]]
+            
+            save_list.append(tmp_list)
 
+        df = pd.DataFrame(save_list,
+                    columns = ["id", "name", "text"],
+            )
+ 
+        df.to_csv("tweets.csv",encoding="utf-8")
 
-        self._log_tweets(data)
-        self._file_IO(data)
 
 
     def _make_req_url(self, word, count):
@@ -55,12 +68,16 @@ class TweetGetFlow():
 
         for tweet in data:
             print("----------------------------------------------------------------------------------------------------")
-            print(tweet["id"])
-            print(tweet["created_at"])
+            ##print(tweet["id"])
+            ##print(tweet["created_at"])
             print(tweet["text"])
 
-            csv_list.append(tweet["text"])
-            print(tweet["text"])
+            print("6371263712361283618")
+            type(tweet["text"])
+            
+            errr = json.load(tweet)
+            print(errr)
+            #csv_list.append(text)
 
 
         self._file_IO(csv_list)    
