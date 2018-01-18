@@ -28,7 +28,7 @@ Usage: tweetgetter
     search_word = args[1]
     search_word_num = args[3]
 
-    if "True" in args[4]:
+    if "True" in args[3]:
         launch_as_agent = True
     else:
         launch_as_agent = False
@@ -39,6 +39,10 @@ Usage: tweetgetter
 
 
     if launch_as_agent:
-        ba(flow.get_tweet(search_word, search_word_num))
+
+        def wrap(search_word, search_word_num):
+            flow.get_tweet(search_word, search_word_num)
+        
+        ba(wrap(search_word, search_word_num))
     else:
         flow.get_tweet(search_word, search_word_num)

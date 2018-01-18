@@ -10,6 +10,7 @@ from requests_oauthlib import OAuth1Session, OAuth1
 from requests.exceptions import ConnectionError, ReadTimeout, SSLError
 from tweetgetter import config
 from tweetgetter import entries
+from tweetgetter.savecsv import save_as_csv as sac
 
 import json
 import requests
@@ -40,6 +41,7 @@ class TweetGetFlow():
 
 
         self._log_tweets(data)
+        self._file_IO(data)
 
 
     def _make_req_url(self, word, count):
@@ -47,12 +49,22 @@ class TweetGetFlow():
 
 
     def _log_tweets(self, data):
+
+        csv_list = []
+
+
         for tweet in data:
             print("----------------------------------------------------------------------------------------------------")
             print(tweet["id"])
             print(tweet["created_at"])
             print(tweet["text"])
-    
+
+            csv_list.append(tweet["text"])
+            print(tweet["text"])
+
+
+        self._file_IO(csv_list)    
 
     def _file_IO(self, data):
-        pass
+        
+        sac("tweets.csv", data)
