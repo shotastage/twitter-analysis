@@ -9,7 +9,6 @@
 import sys
 from tweetgetter.getflow import TweetGetFlow
 from tweetgetter.agent import background_agent as ba
-from tweetgetter.optimizer import optimize_csv
 
 
 def main():

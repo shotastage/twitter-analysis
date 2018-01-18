@@ -26,7 +26,7 @@ df.to_csv(tmp_csv_file)
 
 
 
-removing = pd.read_csv(tmp_csv_file)
-sorted_removing = removing.sort_values(["id", "name", "text"], ascending=[1, 0])
-no_duplicated_removing = sorted_removing.drop_duplicates("text", keep='first')
-no_duplicated_removing.to_csv("result.csv")
+hoge = pd.read_csv(tmp_csv_file)
+sorted_hoge = hoge.sort_values(["name", "text"], ascending=[1, 0])
+no_duplicated_hoge = sorted_hoge.drop_duplicates("text", keep='first')
+no_duplicated_hoge.to_csv("result.csv")
