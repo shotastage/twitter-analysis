@@ -15,6 +15,7 @@ import csv
 import json
 import sys, codecs
 import pandas as pd
+import numpy as np
 import re
 
 
@@ -58,11 +59,12 @@ class TweetGetFlow():
 
             save_list.append(tmp_list)
 
-        df = pd.DataFrame(save_list,
-                    columns = ["id", "name", "text"],
-            )
+        df = pd.DataFrame(
+            save_list,
+            columns = ["id", "name", "text"],
+        )
  
-        df.to_csv("tweets.csv",encoding="utf-8")
+        df.to_csv("./tweets/" + str(np.random.rand()) + "tweets.csv", encoding="utf-8")
 
 
 
@@ -78,7 +80,6 @@ class TweetGetFlow():
             
             errr = json.load(tweet)
             print(errr)
-            #csv_list.append(text)
 
     
     def _format_text(self, text):

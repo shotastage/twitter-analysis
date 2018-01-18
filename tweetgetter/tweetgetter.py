@@ -9,6 +9,8 @@
 import sys
 from tweetgetter.getflow import TweetGetFlow
 from tweetgetter.agent import background_agent as ba
+from tweetgetter.optimizer import optimize_csv
+
 
 def main():
     args = sys.argv
@@ -25,10 +27,25 @@ Usage: tweetgetter
 
 
     # CLI Arguments
-    search_word = args[1]
-    search_word_num = args[3]
+    try:
+        search_word = args[1]
+    except:
+        pass
 
-    if "True" in args[3]:
+    try:
+        search_word_num = args[3]
+    except:
+        pass
+
+
+
+    try:
+        as_agent = args[3]
+    except:
+        as_agent = "False"
+
+
+    if "-as-agent=True" in as_agent:
         launch_as_agent = True
     else:
         launch_as_agent = False
