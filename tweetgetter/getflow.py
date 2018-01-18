@@ -15,6 +15,7 @@ import csv
 import json
 import sys, codecs
 import pandas as pd
+import re
 
 
 class TweetGetFlow():
@@ -43,10 +44,18 @@ class TweetGetFlow():
         save_list = []
 
         for tweet in tweets["statuses"]:
-            tmp_list = [tweet["user"]["screen_name"],
-                        tweet["user"]["name"], 
-                        tweet["text"]]
+            tmp_list = [
+                    tweet["user"]["screen_name"],
+                    tweet["user"]["name"],
+                    self._format_text(tweet["text"])
+            ]
             
+
+            # Log text
+            print("----------------------------------------------------------------------------------------------------")
+            print(tweet["text"])
+
+
             save_list.append(tmp_list)
 
         df = pd.DataFrame(save_list,
@@ -57,10 +66,6 @@ class TweetGetFlow():
 
 
 
-    def _make_req_url(self, word, count):
-        return "https://api.twitter.com/1.1/search/tweets.json" + "?count=" + count + "&lang=ja&q=" + word
-
-
     def _log_tweets(self, data):
 
         csv_list = []
@@ -68,20 +73,22 @@ class TweetGetFlow():
 
         for tweet in data:
             print("----------------------------------------------------------------------------------------------------")
-            ##print(tweet["id"])
-            ##print(tweet["created_at"])
             print(tweet["text"])
-
-            print("6371263712361283618")
             type(tweet["text"])
             
             errr = json.load(tweet)
             print(errr)
             #csv_list.append(text)
 
-
-        self._file_IO(csv_list)    
-
-    def _file_IO(self, data):
-        
-        sac("tweets.csv", data)
+    
+    def _format_text(self, text):
+ 
+        text=re.sub(r'https?://[\w/:%#\$&\?\(\)~\.=\+\-…]+', "", text) # Remove URL
+        text=re.sub('RT', "", text) # Remove RT
+        text=re.sub('お気に入り', "", text) # Remove favo
+        text=re.sub('まとめ', "", text) # Remove matome site
+        text=re.sub(r'[!-~]', "", text) #半角記号,数字,英字
+        text=re.sub(r'[︰-＠]', "", text) #全角記号
+        text=re.sub('\n', " ", text) #改行文字
+ 
+        return text
